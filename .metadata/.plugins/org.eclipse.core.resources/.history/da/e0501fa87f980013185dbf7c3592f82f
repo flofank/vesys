@@ -1,0 +1,49 @@
+package bank.server.socket;
+
+import java.io.IOException;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.swing.SwingUtilities;
+
+import bank.Bank;
+import bank.BankDriver;
+import bank.gui.BankGUI;
+import bank.server.ServerBank;
+
+public class SocketServer {
+	/** Utility class which is only used to start the server */
+	private static Bank bank;
+	private static final List<SocketThread> threads = new ArrayList<SocketThread>();
+	
+	public static void main(String args[]) {
+		try (ServerSocket server = new ServerSocket(6789)) {
+			while (true) {
+				SocketThread thread = new SocketThread(server.accept());
+				threads.add(thread);
+				thread.run();
+				System.out.println("New Client registered");
+			}
+		} catch (IOException e) {
+			
+		} finally {
+			for (SocketThread s : threads) {
+				s.stop();
+			}
+		}
+	}
+	
+	private class SocketThread extends Thread {
+		private Socket socket;
+		private Bank bank;
+		
+		public SocketThread(Socket socket) {
+			this.socket = socket;
+			bank = ServerBank.getInstance();
+		}
+		
+	}
+
+}

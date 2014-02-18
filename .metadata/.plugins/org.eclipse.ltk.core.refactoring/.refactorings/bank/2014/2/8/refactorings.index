@@ -3,3 +3,14 @@
 1392713584644	Rename type 'LocalAccount'
 1392713590634	Rename type 'LocalDriver'
 1392713595854	Rename type 'LocalBank'
+1392714978552	Copy package
+1392714986120	Delete element
+1392715117021	Copy compilation unit
+1392715119828	Delete element
+1392715225838	Rename type 'Server'
+1392715335908	Copy compilation units
+1392715339475	Delete element
+1392715346622	Rename type 'SocketBank'
+1392715352918	Rename type 'SocketAccount'
+1392715362221	Delete element
+1392716651791	Rename package 'bank.client.sockets'

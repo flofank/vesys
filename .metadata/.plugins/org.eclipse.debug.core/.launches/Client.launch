@@ -7,6 +7,6 @@
 <listEntry value="1"/>
 </listAttribute>
 <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="bank.Client"/>
-<stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="bank.local.LocalDriver"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="bank.client.socket.SocketDriver localhost 6789"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="bank"/>
 </launchConfiguration>
