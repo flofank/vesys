@@ -1,0 +1,63 @@
+package bank.local;
+
+import java.io.IOException;
+
+import bank.Account;
+import bank.InactiveException;
+import bank.OverdrawException;
+
+public class LocalAccount implements Account {
+	private String number;
+	private String owner;
+	private boolean active;
+	private double balance;
+	
+	@Override
+	public String getNumber() throws IOException {
+		return number;
+	}
+
+	@Override
+	public String getOwner() throws IOException {
+		return owner;
+	}
+
+	@Override
+	public boolean isActive() throws IOException {
+		return active;
+	}
+
+	@Override
+	public void deposit(double amount) throws IOException,
+			IllegalArgumentException, InactiveException {
+		if (amount < 0) {
+			throw new IllegalArgumentException("No negative values allowed");
+		}
+		if (!active) {
+			throw new InactiveException("Account not active");
+		}
+		balance += amount;
+		
+	}
+
+	@Override
+	public void withdraw(double amount) throws IOException,
+			IllegalArgumentException, OverdrawException, InactiveException {
+		if (amount < 0) {
+			throw new IllegalArgumentException("No negative values allowed");
+		}
+		if (!active) {
+			throw new InactiveException("Account not active");
+		}
+		if (balance < amount) {
+			throw new OverdrawException("Not enough money on account");
+		}
+		balance -= amount;
+	}
+
+	@Override
+	public double getBalance() throws IOException {
+		return balance;
+	}
+
+}

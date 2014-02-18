@@ -1,0 +1,8 @@
+package bank.local;
+
+import bank.Bank;
+
+
+public class LocalBank implements Bank{
+
+}

@@ -1,0 +1,29 @@
+package bank.local;
+
+import java.io.IOException;
+
+import bank.Bank;
+import bank.BankDriver;
+
+public class LocalDriver implements BankDriver {
+	private Bank bank;
+	
+	@Override
+	public void connect(String[] args) throws IOException {
+		bank = new LocalBank();
+		System.out.println("...connected");
+	}
+
+	@Override
+	public void disconnect() throws IOException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public Bank getBank() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}

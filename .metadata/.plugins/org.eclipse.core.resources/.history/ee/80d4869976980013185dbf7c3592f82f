@@ -1,0 +1,49 @@
+package bank.local;
+
+import java.io.IOException;
+import java.util.Map;
+import java.util.Set;
+
+import bank.Account;
+import bank.Bank;
+import bank.InactiveException;
+import bank.OverdrawException;
+
+
+public class LocalBank implements Bank{
+	private Map<String, Account> accounts;
+
+	@Override
+	public String createAccount(String owner) throws IOException {
+		Account ac = new LocalAccount(owner);
+		accounts.put(ac.getNumber(), ac);
+		return ac.getNumber();
+	}
+
+	@Override
+	public boolean closeAccount(String number) throws IOException {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public Set<String> getAccountNumbers() throws IOException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Account getAccount(String number) throws IOException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void transfer(Account a, Account b, double amount)
+			throws IOException, IllegalArgumentException, OverdrawException,
+			InactiveException {
+		// TODO Auto-generated method stub
+		
+	}
+
+}
