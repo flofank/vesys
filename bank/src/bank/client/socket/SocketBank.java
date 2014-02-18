@@ -1,66 +1,61 @@
 package bank.client.socket;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.net.Socket;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Set;
+import java.util.TreeSet;
 
 import bank.Account;
 import bank.Bank;
 import bank.InactiveException;
 import bank.OverdrawException;
 
+public class SocketBank implements Bank {
+	private SocketDriver driver;
 
-public class SocketBank implements Bank{
-	private Map<String, Account> accounts = new HashMap<String, Account>();
-	private Map<String, Account> inactiveAccounts = new HashMap<String, Account>();
-	private PrintWriter out;
-	private BufferedReader in;
-
-	public SocketBank(Socket socket) throws IOException {
-		out = new PrintWriter(socket.getOutputStream());
-		in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+	public SocketBank(SocketDriver driver) {
+		this.driver = driver;
 	}
 
 	@Override
 	public String createAccount(String owner) throws IOException {
-		System.out.println("About to create Account fo owner: " + owner);
-		out.write("createAccount, " + owner);
-		out.flush();
-		System.out.println("Wrote to output Stream");
-		String number = in.readLine();
-		System.out.println("Received accountNumber " + owner);
-		return number;
+		try {
+			return driver.invoke("createAccount," + owner)[1];
+		} catch (IllegalArgumentException | OverdrawException
+				| InactiveException | NoSuchMethodException e) {
+			System.out.println("Something went wrong");
+			e.printStackTrace();
+			return "";
+		}
 	}
 
 	@Override
 	public boolean closeAccount(String number) throws IOException {
-		Account ac = getAccount(number);
-		if (((SocketAccount) ac).close()) {
-			accounts.remove(number);
-			inactiveAccounts.put(number, ac);
-			return true;
+		try {
+			return Boolean.parseBoolean(driver.invoke("closeAccount," + number)[1]);
+		} catch (IllegalArgumentException | OverdrawException
+				| InactiveException | NoSuchMethodException e) {
+			return false;
 		}
-		return false;
 	}
 
 	@Override
 	public Set<String> getAccountNumbers() throws IOException {
-		return accounts.keySet();
+		Set<String> numbers = new TreeSet<String>();
+		try {
+			String[] results = driver.invoke("getAccountNumbers");
+			for (int i = 1; i < results.length; i++) {
+				numbers.add(results[i]);
+			}
+		} catch (IllegalArgumentException | OverdrawException
+				| InactiveException | NoSuchMethodException e) {
+			e.printStackTrace();
+		}
+		return numbers;
 	}
 
 	@Override
 	public Account getAccount(String number) throws IOException {
-		if (accounts.containsKey(number)) {
-			return accounts.get(number);
-		} else {
-			return inactiveAccounts.get(number);
-		}
-		
+		return new SocketAccount(number, driver);
 	}
 
 	@Override

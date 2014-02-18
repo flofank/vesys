@@ -1,0 +1,43 @@
+package bank.client.socket;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.Socket;
+
+import bank.Bank;
+import bank.BankDriver;
+
+public class SocketDriver implements BankDriver {
+	private Bank bank;
+	private Socket socket;
+	private PrintWriter out;
+	private BufferedReader in;
+	
+	@Override
+	public void connect(String[] args) throws IOException {
+		socket = new Socket(args[0], Integer.parseInt(args[1]));
+		out = new PrintWriter(socket.getOutputStream());
+		in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+		bank = new SocketBank(socket);
+		System.out.println("...Client connected with " + socket);
+	}
+
+	@Override
+	public void disconnect() throws IOException {
+		bank = null;
+		socket.close();
+		System.out.println("...disconnected");
+	}
+
+	public Object invoke(String) throws Exception() {
+		
+	}
+	
+	@Override
+	public Bank getBank() {
+		return bank;
+	}
+
+}

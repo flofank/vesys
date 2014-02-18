@@ -1,0 +1,72 @@
+package bank.client.socket;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.Socket;
+import java.text.MessageFormat;
+
+import bank.Account;
+import bank.InactiveException;
+import bank.OverdrawException;
+
+public class SocketAccount implements Account {
+	private String number;
+	private SocketDriver driver;
+
+	public SocketAccount(String number, SocketDriver driver) throws IOException {
+		this.number = number;
+		this.driver = driver;
+	}
+	@Override
+	public String getNumber() throws IOException {
+		return number;
+	}
+
+	@Override
+	public String getOwner() throws IOException {
+		try {
+			return driver.invoke("getAccountOwner, " + number)[1];
+		} catch (IllegalArgumentException | NoSuchMethodException
+				| OverdrawException | InactiveException e) {
+			e.printStackTrace();
+		}
+		return "";
+	}
+
+	@Override
+	public boolean isActive() throws IOException {
+		out.println("getAccountStatus, " + number);
+		out.flush();
+		return Boolean.parseBoolean(in.readLine());
+	}
+
+	@Override
+	public void deposit(double amount) throws IOException,
+			IllegalArgumentException, InactiveException {
+		out.println("depositOnAccount, " + number + ", " + amount);
+		out.flush();
+	}
+
+	@Override
+	public void withdraw(double amount) throws IOException,
+			IllegalArgumentException, OverdrawException, InactiveException {
+		out.println("withDrawFromAccount, " + number + ", " + amount);
+		out.flush();
+	}
+
+	@Override
+	public double getBalance() throws IOException {
+		return balance;
+	}
+	
+	public boolean close() {
+		if (balance == 0 && active) {
+			active = false;
+			return true;
+		}
+		return false;
+	}
+
+}

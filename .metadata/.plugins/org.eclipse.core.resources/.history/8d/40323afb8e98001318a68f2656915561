@@ -1,0 +1,80 @@
+package bank.client.socket;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.Socket;
+import java.text.MessageFormat;
+
+import bank.Account;
+import bank.InactiveException;
+import bank.OverdrawException;
+
+public class SocketAccount implements Account {
+	private String number;
+	private PrintWriter out;
+	private BufferedReader in;
+
+	public SocketAccount(String number, Socket socket) throws IOException {
+		this.number = number;
+		out = new PrintWriter(socket.getOutputStream());
+		in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+	}
+	@Override
+	public String getNumber() throws IOException {
+		return number;
+	}
+
+	@Override
+	public String getOwner() throws IOException {
+		return owner;
+	}
+
+	@Override
+	public boolean isActive() throws IOException {
+		return active;
+	}
+
+	@Override
+	public void deposit(double amount) throws IOException,
+			IllegalArgumentException, InactiveException {
+		if (amount < 0) {
+			throw new IllegalArgumentException("No negative values allowed");
+		}
+		if (!active) {
+			throw new InactiveException("Account not active");
+		}
+		balance += amount;
+		
+	}
+
+	@Override
+	public void withdraw(double amount) throws IOException,
+			IllegalArgumentException, OverdrawException, InactiveException {
+		if (amount < 0) {
+			throw new IllegalArgumentException("No negative values allowed");
+		}
+		if (!active) {
+			throw new InactiveException("Account not active");
+		}
+		if (balance < amount) {
+			throw new OverdrawException("Not enough money on account");
+		}
+		balance -= amount;
+	}
+
+	@Override
+	public double getBalance() throws IOException {
+		return balance;
+	}
+	
+	public boolean close() {
+		if (balance == 0 && active) {
+			active = false;
+			return true;
+		}
+		return false;
+	}
+
+}

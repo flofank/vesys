@@ -1,26 +1,19 @@
 package bank.client.socket;
 
 import java.io.IOException;
-import java.text.MessageFormat;
 
 import bank.Account;
 import bank.InactiveException;
 import bank.OverdrawException;
 
 public class SocketAccount implements Account {
-	private static final String NUMBER_PATTERN = "42-1337-{0}";
-	private static int numberCounter = 0;
 	private String number;
-	private String owner;
-	private boolean active;
-	private double balance;
-	
-	public SocketAccount(String owner) {
-		this.owner = owner;
-		this.number = MessageFormat.format(NUMBER_PATTERN, ++numberCounter);
-		active = true;
+	private SocketDriver driver;
+
+	public SocketAccount(String number, SocketDriver driver) throws IOException {
+		this.number = number;
+		this.driver = driver;
 	}
-	
 	@Override
 	public String getNumber() throws IOException {
 		return number;
@@ -28,53 +21,54 @@ public class SocketAccount implements Account {
 
 	@Override
 	public String getOwner() throws IOException {
-		return owner;
+		try {
+			return driver.invoke("getAccountOwner," + number)[1];
+		} catch (IllegalArgumentException | NoSuchMethodException
+				| OverdrawException | InactiveException e) {
+			e.printStackTrace();
+		}
+		return "";
 	}
 
 	@Override
 	public boolean isActive() throws IOException {
-		return active;
+		try {
+			return Boolean.parseBoolean(driver.invoke("getAccountStatus," + number)[1]);
+		} catch (IllegalArgumentException | NoSuchMethodException
+				| OverdrawException | InactiveException e) {
+			e.printStackTrace();
+		}
+		return false;
 	}
 
 	@Override
 	public void deposit(double amount) throws IOException,
 			IllegalArgumentException, InactiveException {
-		if (amount < 0) {
-			throw new IllegalArgumentException("No negative values allowed");
+		try {
+			driver.invoke("depositOnAccount," + number + "," + amount);
+		} catch (NoSuchMethodException | OverdrawException e) {
+			e.printStackTrace();
 		}
-		if (!active) {
-			throw new InactiveException("Account not active");
-		}
-		balance += amount;
-		
 	}
 
 	@Override
 	public void withdraw(double amount) throws IOException,
 			IllegalArgumentException, OverdrawException, InactiveException {
-		if (amount < 0) {
-			throw new IllegalArgumentException("No negative values allowed");
+		try {
+			driver.invoke("withdrawFromAccount," + number + "," + amount);
+		} catch (NoSuchMethodException e) {
+			e.printStackTrace();
 		}
-		if (!active) {
-			throw new InactiveException("Account not active");
-		}
-		if (balance < amount) {
-			throw new OverdrawException("Not enough money on account");
-		}
-		balance -= amount;
 	}
 
 	@Override
 	public double getBalance() throws IOException {
-		return balance;
-	}
-	
-	public boolean close() {
-		if (balance == 0 && active) {
-			active = false;
-			return true;
+		try {
+			return Double.parseDouble(driver.invoke("getAccountBalance," + number)[1]);
+		} catch (IllegalArgumentException | NoSuchMethodException
+				| OverdrawException | InactiveException e) {
+			e.printStackTrace();
 		}
-		return false;
+		return 0;
 	}
-
 }
