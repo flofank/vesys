@@ -39,7 +39,7 @@ public class SocketDriver implements BankDriver {
 		String result = in.readLine();
 		String[] results = result.split(",");
 		System.out.println("Got return value: " + result);
-		switch(Integer.parseInt(results[0])) {
+		switch(Integer.parseInt(results[0])) { // Statuscode
 			case 1:
 				throw new IllegalArgumentException();
 			case 2:
