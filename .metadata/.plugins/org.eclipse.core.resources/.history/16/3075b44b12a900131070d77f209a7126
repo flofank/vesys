@@ -1,0 +1,59 @@
+package ch.fhnw.bank.client.servlet;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.HttpURLConnection;
+import java.net.Socket;
+import java.net.URL;
+
+import ch.fhnw.bank.Bank;
+import ch.fhnw.bank.BankDriver;
+import ch.fhnw.bank.InactiveException;
+import ch.fhnw.bank.OverdrawException;
+
+public class ServletDriver implements BankDriver {
+	private Bank bank;
+	private String targetUrl;
+
+	@Override
+	public void connect(String[] args) throws IOException {
+		targetUrl = args[0];
+		System.out.println("...Client started with server address: " + targetUrl);
+	}
+
+	@Override
+	public void disconnect() throws IOException {
+		bank = null;
+		System.out.println("...shutting down");
+	}
+
+	public String[] invoke(String param) throws IllegalArgumentException,
+			OverdrawException, InactiveException, IOException,
+			NoSuchMethodException {
+		out.println(param);
+		out.flush();
+		String result = in.readLine();
+		String[] results = result.split(",");
+		System.out.println("Got return value: " + result);
+		switch (Integer.parseInt(results[0])) { // Statuscode
+		case 1:
+			throw new IllegalArgumentException();
+		case 2:
+			throw new OverdrawException();
+		case 3:
+			throw new InactiveException();
+		case 4:
+			throw new NoSuchMethodException();
+		default:
+			return results;
+		}
+	}
+
+	@Override
+	public Bank getBank() {
+		return bank;
+	}
+
+}

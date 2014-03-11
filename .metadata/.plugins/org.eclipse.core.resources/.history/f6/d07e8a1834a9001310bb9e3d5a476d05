@@ -1,0 +1,58 @@
+package ch.fhnw.bank.client.servlet;
+
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.Set;
+import java.util.TreeSet;
+
+import ch.fhnw.bank.Account;
+import ch.fhnw.bank.Bank;
+import ch.fhnw.bank.InactiveException;
+import ch.fhnw.bank.OverdrawException;
+import ch.fhnw.bank.communication.Task;
+import ch.fhnw.bank.communication.Task.Task;
+
+public class ServletBank implements Bank {
+	private ServletDriver driver;
+
+	public ServletBank(ServletDriver driver) {
+		this.driver = driver;
+	}
+
+	@Override
+	public String createAccount(String owner) throws IOException {
+		CreateAccountTask task = new CreateAccountTask(owner);
+		driver.invoke(task);
+		return task.getResult();
+	}
+
+	@Override
+	public boolean closeAccount(String number) throws IOException {
+		Task task = new Task(Task.CLOSE_ACCOUNT, new String[] {number});
+		task = driver.invoke(task);
+		return task.bResult;
+	}
+
+	@Override
+	public Set<String> getAccountNumbers() throws IOException {
+		Task task = new Task(Task.GET_ACCOUNT_NUMBERS);
+		return new TreeSet(Arrays.asList(driver.invoke(task).results));
+	}
+
+	@Override
+	public Account getAccount(String number) throws IOException {
+		return new ServletAccount(number, driver);
+	}
+
+	@Override
+	public void transfer(Account a, Account b, double amount)
+			throws IOException, IllegalArgumentException, OverdrawException,
+			InactiveException {
+		if (amount < 0) {
+			throw new IllegalArgumentException("No negative amounts allowed");
+		}
+		Task task = new Task(Task.TRANSFER, new String[] {a.getNumber(), b.getNumber()}, new double[] {amount});
+		task = driver.invoke(task);
+	}
+
+}

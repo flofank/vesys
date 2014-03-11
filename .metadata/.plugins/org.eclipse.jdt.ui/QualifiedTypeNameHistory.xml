@@ -3,7 +3,6 @@
 <fullyQualifiedTypeName name="java.io.BufferedInputStream"/>
 <fullyQualifiedTypeName name="java.lang.Exception"/>
 <fullyQualifiedTypeName name="java.lang.NoSuchMethodException"/>
-<fullyQualifiedTypeName name="java.util.TreeSet"/>
 <fullyQualifiedTypeName name="java.lang.IllegalArgumentException"/>
 <fullyQualifiedTypeName name="bank.OverdrawException"/>
 <fullyQualifiedTypeName name="bank.InactiveException"/>
@@ -11,4 +10,20 @@
 <fullyQualifiedTypeName name="java.lang.StringBuilder"/>
 <fullyQualifiedTypeName name="bank.Bank"/>
 <fullyQualifiedTypeName name="bank.server.ServerBank"/>
+<fullyQualifiedTypeName name="java.io.Serializable"/>
+<fullyQualifiedTypeName name="ch.fhnw.bank.client.socket.SocketBank"/>
+<fullyQualifiedTypeName name="ch.fhnw.bank.client.servlet.ServletDriver"/>
+<fullyQualifiedTypeName name="java.net.URL"/>
+<fullyQualifiedTypeName name="java.net.HttpURLConnection"/>
+<fullyQualifiedTypeName name="java.io.OutputStream"/>
+<fullyQualifiedTypeName name="java.io.InputStream"/>
+<fullyQualifiedTypeName name="java.io.ObjectInputStream"/>
+<fullyQualifiedTypeName name="java.io.IOException"/>
+<fullyQualifiedTypeName name="java.util.TreeSet"/>
+<fullyQualifiedTypeName name="java.util.Arrays"/>
+<fullyQualifiedTypeName name="ch.fhnw.bank.communication.TaskMessage.Task"/>
+<fullyQualifiedTypeName name="ch.fhnw.bank.communication.TaskMessage"/>
+<fullyQualifiedTypeName name="ch.fhnw.bank.client.servlet.ServletBank"/>
+<fullyQualifiedTypeName name="java.io.ObjectOutputStream"/>
+<fullyQualifiedTypeName name="java.net.URLConnection"/>
 </qualifiedTypeNameHistroy>

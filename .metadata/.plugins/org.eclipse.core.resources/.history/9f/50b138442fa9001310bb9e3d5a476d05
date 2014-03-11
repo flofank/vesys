@@ -1,0 +1,65 @@
+package ch.fhnw.bank.client.servlet;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLConnection;
+
+import ch.fhnw.bank.Bank;
+import ch.fhnw.bank.BankDriver;
+import ch.fhnw.bank.communication.TaskMessage;
+
+public class ServletDriver implements BankDriver {
+	private Bank bank;
+	private String targetUrl;
+
+	@Override
+	public void connect(String[] args) throws IOException {
+		targetUrl = args[0];
+		bank = new ServletBank(this);
+		System.out.println("[INFO]Client started with server address: "
+				+ targetUrl);
+	}
+
+	@Override
+	public void disconnect() throws IOException {
+		bank = null;
+		System.out.println("[INFO]shutting down");
+	}
+
+	public TaskMessage invoke(TaskMessage task) throws IOException {
+		URL url = new URL("http://www.google.com");
+		HttpURLConnection c = (HttpURLConnection) url.openConnection();
+		c.setRequestMethod("POST");
+		c.setDoOutput(true);
+		c.setDoInput(true);
+		c.setUseCaches(false);
+//		c.connect();
+
+		ObjectOutputStream oos = new ObjectOutputStream(c.getOutputStream());
+		oos.writeObject(task);
+		oos.flush();
+		oos.close();
+
+//		InputStream is = c.getInputStream();
+//		ObjectInputStream ois = new ObjectInputStream(is);
+//		try {
+//			return (TaskMessage) ois.readObject();
+//		} catch (ClassNotFoundException e) {
+//			throw new IOException(e);
+//		}
+		System.out.println("Invoked");
+		task.results = new String[0];
+		return task;
+	}
+
+	@Override
+	public Bank getBank() {
+		return bank;
+	}
+
+}

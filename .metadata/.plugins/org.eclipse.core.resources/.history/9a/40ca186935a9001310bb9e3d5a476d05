@@ -1,0 +1,13 @@
+package ch.fhnw.bank.communication;
+
+import java.io.Serializable;
+
+public class GetOwnerTask extends Task {
+	public void execute() {
+		
+	}
+	
+	public Object getResult() {
+		
+	}
+}

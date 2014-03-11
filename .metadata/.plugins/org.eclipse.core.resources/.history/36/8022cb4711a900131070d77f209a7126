@@ -1,0 +1,70 @@
+/*
+ * Copyright (c) 2000-2013 Fachhochschule Nordwestschweiz (FHNW)
+ * All Rights Reserved. 
+ */
+
+package ch.fhnw.bank.server.servlet;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.Set;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import ch.fhnw.bank.InactiveException;
+import ch.fhnw.bank.OverdrawException;
+
+@WebServlet("/*")
+public class BankServlet extends HttpServlet { 
+	@Override
+	public void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws IOException, ServletException {
+		response.setContentType("text/csv");
+		PrintWriter out = response.getWriter();
+		
+		System.out.println("About to handle: " + request.getRequestURL());
+//		String[] params = param.split(",");
+//		try {
+//			switch (params[0]) {
+//			case "createAccount":
+//				return "0," + bank.createAccount(params[1]);
+//			case "closeAccount":
+//				return "0," + bank.closeAccount(params[1]);
+//			case "getAccountNumbers":
+//				Set<String> numbers = bank.getAccountNumbers();
+//				StringBuilder sb = new StringBuilder();
+//				for (String number : numbers) {
+//					sb.append(",");
+//					sb.append(number);
+//				}
+//				return "0" + sb.toString();
+//			case "getAccountOwner":
+//				return "0," + bank.getAccount(params[1]).getOwner();
+//			case "getAccountStatus":
+//				return "0," + bank.getAccount(params[1]).isActive();
+//			case "depositOnAccount":
+//				bank.getAccount(params[1]).deposit(Double.parseDouble(params[2]));
+//				return "0";
+//			case "withdrawFromAccount":
+//				bank.getAccount(params[1]).withdraw(Double.parseDouble(params[2]));
+//				return "0";
+//			case "getAccountBalance":
+//				return "0," + bank.getAccount(params[1]).getBalance();
+//			default:
+//				// NoSuchMethodException
+//				return "4";
+//			}
+//		} catch (IllegalArgumentException e) {
+//			return "1";
+//		} catch (OverdrawException ex) {
+//			return "2";
+//		} catch (InactiveException exc) {
+//			return "3";
+//		}
+	}
+}
+

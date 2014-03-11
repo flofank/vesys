@@ -1,0 +1,11 @@
+package ch.fhnw.bank.communication;
+
+public class IsActiveTask extends Task {
+	public void execute() {
+		
+	}
+	
+	public Object getResult() {
+		return null;
+	}
+}

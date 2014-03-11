@@ -1,0 +1,61 @@
+package ch.fhnw.bank.client.servlet;
+
+import java.io.IOException;
+
+import ch.fhnw.bank.Account;
+import ch.fhnw.bank.InactiveException;
+import ch.fhnw.bank.OverdrawException;
+import ch.fhnw.bank.communication.TaskMessage;
+import ch.fhnw.bank.communication.TaskMessage.Task;
+
+public class ServletAccount implements Account {
+	private String number;
+	private ServletDriver driver;
+
+	public ServletAccount(String number, ServletDriver driver) throws IOException {
+		this.number = number;
+		this.driver = driver;
+	}
+	@Override
+	public String getNumber() throws IOException {
+		return number;
+	}
+
+	@Override
+	public String getOwner() throws IOException {
+		TaskMessage task = new TaskMessage(Task.GET_ACCOUNT_OWNER, new String[] {number});
+		return driver.invoke(task).results[0];
+	}
+
+	@Override
+	public boolean isActive() throws IOException {
+		TaskMessage task = new TaskMessage(Task.GET_ACCOUNT_STATUS, new String[] {number});
+		return driver.invoke(task).bResult;
+	}
+
+	@Override
+	public void deposit(double amount) throws IOException,
+			IllegalArgumentException, InactiveException {
+		TaskMessage task = new TaskMessage(Task.DEPOSIT_ON_ACCOUNT, new String[] {number}, new double[] {amount});
+		task = driver.invoke(task);
+		if (task.exception != null) {
+//			throw task.exception;
+		}
+	}
+
+	@Override
+	public void withdraw(double amount) throws IOException,
+			IllegalArgumentException, OverdrawException, InactiveException {
+		TaskMessage task = new TaskMessage(Task.WITHDRAW_FROM_ACCOUNT, new String[] {number}, new double[] {amount});
+		task = driver.invoke(task);
+		if (task.exception != null) {
+//			throw task.exception;
+		}
+	}
+
+	@Override
+	public double getBalance() throws IOException {
+		TaskMessage task = new TaskMessage(Task.GET_ACCOUNT_BALANCE, new String[] {number});
+		return driver.invoke(task).dResults[0];
+	}
+}

@@ -1,0 +1,11 @@
+package ch.fhnw.bank.communication;
+
+public class GetAccountNumbersTask extends Task {
+	public void execute() {
+		
+	}
+	
+	public Object getResult() {
+		return null;
+	}
+}

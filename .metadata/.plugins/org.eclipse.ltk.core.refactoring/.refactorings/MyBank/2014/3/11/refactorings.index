@@ -1,0 +1,27 @@
+1394528830407	Delete element
+1394528891832	Rename type 'EchoServlet'
+1394529159572	Rename package 'bank'
+1394529184785	Rename package 'bank.client.socket'
+1394529190145	Rename package 'bank.gui'
+1394529194986	Rename package 'bank.gui.tests'
+1394529198495	Rename package 'bank.local'
+1394529203326	Rename package 'bank.server'
+1394529225068	Rename package 'bank.server.servlet'
+1394529231016	Rename package 'bank.server.socket'
+1394530316622	Copy compilation unit
+1394530324510	Rename type 'SocketDriver'
+1394537486720	Rename compilation unit 'Task.java'
+1394537822199	Copy compilation units
+1394537832698	Rename type 'SocketAccount'
+1394537838407	Rename type 'SocketBank'
+1394538924233	Rename field 'e'
+1394552489604	Rename type 'TaskMessage'
+1394552852361	Copy compilation unit
+1394552858700	Copy compilation unit
+1394552865817	Copy compilation unit
+1394552871402	Copy compilation unit
+1394553117791	Copy compilation unit
+1394553123835	Copy compilation unit
+1394553130094	Copy compilation unit
+1394553136591	Copy compilation unit
+1394553140763	Copy compilation unit

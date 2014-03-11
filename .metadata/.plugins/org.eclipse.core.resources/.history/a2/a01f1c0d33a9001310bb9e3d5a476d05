@@ -1,0 +1,58 @@
+/*
+ * Copyright (c) 2000-2013 Fachhochschule Nordwestschweiz (FHNW)
+ * All Rights Reserved. 
+ */
+
+package ch.fhnw.bank.server.servlet;
+
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.PrintWriter;
+import java.util.Set;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import ch.fhnw.bank.InactiveException;
+import ch.fhnw.bank.OverdrawException;
+import ch.fhnw.bank.communication.TaskMessage;
+import ch.fhnw.bank.communication.TaskMessage.Task;
+
+@WebServlet("/*")
+public class BankServlet extends HttpServlet {
+	@Override
+	public void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws IOException, ServletException {
+		System.out.println("[INFO] About to handle Get Request on: "
+				+ request.getRequestURL());
+	}
+
+	@Override
+	public void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws IOException {
+		System.out.println("[INFO] About to handle Post Request on: "
+				+ request.getRequestURL());
+		ObjectInputStream ois = new ObjectInputStream(request.getInputStream());
+		try {
+			TaskMessage task = (TaskMessage) ois.readObject();
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("[ERROR] Reading Object failed");
+		}
+		System.out.println("[TRACE] So far so good");
+		// try {
+		// ObjectOutputStream oos = new
+		// ObjectOutputStream(response.getOutputStream());
+		// oos.writeObject(new TaskMessage(Task.CLOSE_ACCOUNT));
+		// oos.flush();
+		// oos.close();
+		// } catch (Exception e) {
+		// e.printStackTrace();
+		// System.out.println("[ERROR] Communication Error occured");
+		// }
+	}
+}

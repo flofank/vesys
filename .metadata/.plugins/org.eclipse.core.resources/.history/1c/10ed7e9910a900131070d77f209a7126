@@ -1,0 +1,5 @@
+package ch.fhnw.bank.communication;
+
+public class Task {
+
+}

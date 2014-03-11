@@ -1,0 +1,35 @@
+/*
+ * Copyright (c) 2000-2013 Fachhochschule Nordwestschweiz (FHNW)
+ * All Rights Reserved. 
+ */
+
+package ch.fhnw.bank.server.servlet;
+
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.io.PrintWriter;
+import java.util.Set;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import ch.fhnw.bank.InactiveException;
+import ch.fhnw.bank.OverdrawException;
+
+@WebServlet("/*")
+public class BankServlet extends HttpServlet { 
+	@Override
+	public void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws IOException, ServletException {
+		response.setContentType("text/html");
+		response.getWriter().write("Hello World");
+		response.getWriter().flush();
+//		ObjectOutputStream oos = new ObjectOutputStream(response.getOutputStream());
+//		response.getOutputStream().flush();
+		System.out.println("About to handle: " + request.getRequestURL());
+	}
+}
+

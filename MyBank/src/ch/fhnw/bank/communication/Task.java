@@ -1,0 +1,11 @@
+package ch.fhnw.bank.communication;
+
+import java.io.Serializable;
+
+import ch.fhnw.bank.OverdrawException;
+
+public abstract class Task implements Serializable {
+	private static final long serialVersionUID = 7591468067248228207L;
+	
+	public abstract void execute();
+}

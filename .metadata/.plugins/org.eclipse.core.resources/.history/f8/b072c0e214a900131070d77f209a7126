@@ -1,0 +1,33 @@
+package ch.fhnw.bank.communication;
+
+import java.io.Serializable;
+
+public class TaskMessage implements Serializable {
+	private static final long serialVersionUID = 7591468067248228207L;
+	public Task task;
+	public String[] params;
+	public double[] dParams;
+	public String[] results;
+	public double[] dResults;
+	public boolean bResult;
+	public Exception exception;
+	
+	public TaskMessage(Task task) {
+		this.task = task;
+	}
+	
+	public TaskMessage(Task task, String[] params) {
+		this(task);
+		this.params = params;
+	}
+	
+	public TaskMessage(Task task, String[] params, double[] dParams) {
+		this(task, params);
+		this.dParams = dParams;
+	}
+	
+	public enum Task {
+		CREATE_ACCOUNT, CLOSE_ACCOUNT, GET_ACCOUNT_NUMBERS, GET_ACCOUNT_OWNER, GET_ACCOUNT_STATUS,
+		DEPOSIT_ON_ACCOUNT, WITHDRAW_FROM_ACCOUNT, GET_ACCOUNT_BALANCE;
+	}
+}

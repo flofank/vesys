@@ -1,0 +1,18 @@
+package ch.fhnw.bank.communication;
+
+public class DepositTask extends Task {
+	private String number;
+	private Double amount;
+	
+	public DepositTask(String number, double amount) {
+		// TODO Auto-generated constructor stub
+	}
+
+	public void execute() {
+		
+	}
+	
+	public Object getResult() {
+		return null;
+	}
+}
