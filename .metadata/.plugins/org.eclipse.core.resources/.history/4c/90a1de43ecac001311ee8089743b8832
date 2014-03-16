@@ -1,0 +1,20 @@
+package ch.fhnw.bank.communication;
+
+import ch.fhnw.bank.Bank;
+
+public class CreateAccountTask extends Task {
+	private String owner;
+	private String number;
+	
+	public CreateAccountTask(String owner) {
+		this.owner = owner;
+	}
+
+	public void execute(Bank bank) {
+		number = bank.createAccount(owner);
+	}
+	
+	public String getResult() {
+		return owner;
+	}
+}

@@ -17,12 +17,17 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import ch.fhnw.bank.Bank;
 import ch.fhnw.bank.InactiveException;
 import ch.fhnw.bank.OverdrawException;
+import ch.fhnw.bank.communication.GetAccountNumbersTask;
 import ch.fhnw.bank.communication.Task;
+import ch.fhnw.bank.server.ServerBank;
 
 @WebServlet("/*")
 public class BankServlet extends HttpServlet {
+	private static final Bank bank = ServerBank.getInstance();
+	
 	@Override
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws IOException, ServletException {
@@ -38,7 +43,11 @@ public class BankServlet extends HttpServlet {
 					request.getInputStream());
 			Task task;
 			task = (Task) ois.readObject();
-			task.execute();
+			task.execute(bank);
+			System.out.println(task.getClass());
+			if (task instanceof GetAccountNumbersTask) {
+				System.out.println(((GetAccountNumbersTask) task).getResult());
+			}
 			ObjectOutputStream oos = new ObjectOutputStream(
 					response.getOutputStream());
 			oos.writeObject(task);

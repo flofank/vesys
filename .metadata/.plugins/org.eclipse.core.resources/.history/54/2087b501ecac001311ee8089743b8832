@@ -1,0 +1,18 @@
+package ch.fhnw.bank.communication;
+
+import java.io.IOException;
+import java.util.Set;
+
+import ch.fhnw.bank.Bank;
+
+public class GetAccountNumbersTask extends Task {
+	private Set<String> numbers;
+	
+	public void execute(Bank bank) throws IOException {
+		numbers = bank.getAccountNumbers();
+	}
+	
+	public Set<String> getResult() {
+		return numbers;
+	}
+}

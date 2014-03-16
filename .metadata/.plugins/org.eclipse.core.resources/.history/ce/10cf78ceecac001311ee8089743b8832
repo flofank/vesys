@@ -1,0 +1,20 @@
+package ch.fhnw.bank.communication;
+
+public class TransferTask extends Task {
+	private String numberA, numberB;
+	private double amount;
+	
+	public TransferTask(String numberA, String numberB, double amount) {
+		this.numberA = numberA;
+		this.numberB = numberB;
+		this.amount = amount;
+	}
+
+	public void execute() {
+		
+	}
+	
+	public Object getResult() {
+		return null;
+	}
+}
