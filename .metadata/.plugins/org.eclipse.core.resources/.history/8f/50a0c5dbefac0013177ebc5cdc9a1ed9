@@ -31,7 +31,6 @@ public class ServletDriver implements BankDriver {
 		System.out.println("[INFO]shutting down");
 	}
 
-	@SuppressWarnings("unchecked")
 	public <T extends Task> T invoke(T task) throws IOException {
 		URL url = new URL(targetUrl);
 		HttpURLConnection c = (HttpURLConnection) url.openConnection();
@@ -53,6 +52,9 @@ public class ServletDriver implements BankDriver {
 		} catch (ClassNotFoundException e) {
 			throw new IOException(e);
 		}
+//		System.out.println("Invoked");
+//		task.results = new String[0];
+//		return task;
 	}
 
 	@Override

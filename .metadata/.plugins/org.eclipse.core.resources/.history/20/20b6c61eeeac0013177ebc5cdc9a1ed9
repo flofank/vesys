@@ -42,9 +42,7 @@
 		<war warfile="${basedir}/bank.war" needxmlfile="false">
 			<classes dir="${classes.dir}" >
 				<include name="ch/fhnw/bank/communication/*.class" />
-				<include name="ch/fhnw/bank/server/*/*.class" />
-				<include name="ch/fhnw/bank/server/*.class" />
-				<include name="ch/fhnw/bank/*.class" />
+				<include name="ch/fhnw/bank/server/servlet/*.class" />
 			</classes>
 		</war>
 	</target>

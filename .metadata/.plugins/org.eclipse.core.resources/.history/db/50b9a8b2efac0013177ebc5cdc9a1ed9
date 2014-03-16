@@ -12,8 +12,7 @@ public class WithdrawTask extends Task {
 	private double amount;
 	
 	public WithdrawTask(String number, double amount) {
-		this.number = number;
-		this.amount = amount;
+		// TODO Auto-generated constructor stub
 	}
 
 	public void execute(Bank bank) {

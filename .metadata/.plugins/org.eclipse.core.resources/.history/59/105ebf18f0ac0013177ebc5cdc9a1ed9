@@ -28,9 +28,6 @@ public class ServletAccount implements Account {
 	public String getOwner() throws IOException {
 		GetOwnerTask task = new GetOwnerTask(number);
 		task = driver.invoke(task);
-		if (task.hasException() && task.getException() instanceof IOException) {
-			throw (IOException) task.getException();
-		}
 		return task.getResult();
 	}
 
@@ -38,9 +35,6 @@ public class ServletAccount implements Account {
 	public boolean isActive() throws IOException {
 		IsActiveTask task = new IsActiveTask(number);
 		task = driver.invoke(task);
-		if (task.hasException() && task.getException() instanceof IOException) {
-			throw (IOException) task.getException();
-		}
 		return task.getResult();
 	}
 
@@ -49,15 +43,6 @@ public class ServletAccount implements Account {
 			IllegalArgumentException, InactiveException {
 		DepositTask task = new DepositTask(number, amount);
 		task = driver.invoke(task);
-		if (task.hasException()) {
-			if (task.getException() instanceof IllegalArgumentException) {
-				throw (IllegalArgumentException) task.getException();
-			} else  if (task.getException() instanceof InactiveException) {
-				throw (InactiveException) task.getException();
-			} else if (task.getException() instanceof IOException) {
-				throw (IOException) task.getException();
-			}
-		}
 		task.getResult();
 	}
 
@@ -66,17 +51,6 @@ public class ServletAccount implements Account {
 			IllegalArgumentException, OverdrawException, InactiveException {
 		WithdrawTask task = new WithdrawTask(number, amount);
 		task = driver.invoke(task);
-		if (task.hasException()) {
-			if (task.getException() instanceof IllegalArgumentException) {
-				throw (IllegalArgumentException) task.getException();
-			} else  if (task.getException() instanceof InactiveException) {
-				throw (InactiveException) task.getException();
-			} else if (task.getException() instanceof OverdrawException) {
-				throw (OverdrawException) task.getException();
-			} else if (task.getException() instanceof IOException) {
-				throw (IOException) task.getException();
-			}
-		}
 		task.getResult();
 	}
 
@@ -84,9 +58,6 @@ public class ServletAccount implements Account {
 	public double getBalance() throws IOException {
 		GetBalanceTask task = new GetBalanceTask(number);
 		task = driver.invoke(task);
-		if (task.hasException() && task.getException() instanceof IOException) {
-			throw (IOException) task.getException();
-		}
 		return task.getResult();
 	}
 }

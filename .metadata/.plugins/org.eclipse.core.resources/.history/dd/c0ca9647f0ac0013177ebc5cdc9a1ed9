@@ -84,9 +84,6 @@ public class ServletAccount implements Account {
 	public double getBalance() throws IOException {
 		GetBalanceTask task = new GetBalanceTask(number);
 		task = driver.invoke(task);
-		if (task.hasException() && task.getException() instanceof IOException) {
-			throw (IOException) task.getException();
-		}
 		return task.getResult();
 	}
 }

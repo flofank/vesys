@@ -41,7 +41,8 @@ public class BankServlet extends HttpServlet {
 	}
 
 	@Override
-	public void doPost(HttpServletRequest request, HttpServletResponse response) {
+	public void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws IOException {
 		System.out.println("[INFO] About to handle Post Request on: "
 				+ request.getRequestURL());
 		try {
@@ -59,8 +60,12 @@ public class BankServlet extends HttpServlet {
 			System.out.println("HA");
 			oos.close();
 			System.out.println("HUI");
-		} catch (Exception e) {
+		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
+	}
+
+	private void executeTask(Task task) {
+		System.out.println("Executing Task");
 	}
 }

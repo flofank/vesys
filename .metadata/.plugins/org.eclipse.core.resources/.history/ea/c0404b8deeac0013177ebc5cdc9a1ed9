@@ -44,7 +44,6 @@
 				<include name="ch/fhnw/bank/communication/*.class" />
 				<include name="ch/fhnw/bank/server/*/*.class" />
 				<include name="ch/fhnw/bank/server/*.class" />
-				<include name="ch/fhnw/bank/*.class" />
 			</classes>
 		</war>
 	</target>

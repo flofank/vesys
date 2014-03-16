@@ -35,11 +35,6 @@ public class ServletBank implements Bank {
 	public boolean closeAccount(String number) throws IOException {
 		CloseAccountTask task = new CloseAccountTask(number);
 		task = driver.invoke(task);
-		if (task.hasException()) {
-			if (task.getException() instanceof IOException) {
-				throw (IOException) task.getException();
-			}
-		}
 		return task.getResult();
 	}
 
@@ -47,11 +42,6 @@ public class ServletBank implements Bank {
 	public Set<String> getAccountNumbers() throws IOException {
 		GetAccountNumbersTask task = new GetAccountNumbersTask();
 		task = driver.invoke(task);
-		if (task.hasException()) {
-			if (task.getException() instanceof IOException) {
-				throw (IOException) task.getException();
-			}
-		}
 		return task.getResult();
 	}
 
@@ -66,17 +56,6 @@ public class ServletBank implements Bank {
 			InactiveException {
 		TransferTask task = new TransferTask(a.getNumber(), b.getNumber(), amount);
 		task = driver.invoke(task);
-		if (task.hasException()) {
-			if (task.getException() instanceof IllegalArgumentException) {
-				throw (IllegalArgumentException) task.getException();
-			} else  if (task.getException() instanceof InactiveException) {
-				throw (InactiveException) task.getException();
-			} else if (task.getException() instanceof OverdrawException) {
-				throw (OverdrawException) task.getException();
-			} else if (task.getException() instanceof IOException) {
-				throw (IOException) task.getException();
-			}
-		}
 		task.getResult();
 	}
 
