@@ -13,9 +13,9 @@ import ch.fhnw.bank.communication.GetAccountNumbersTask;
 import ch.fhnw.bank.communication.TransferTask;
 
 public class ServletBank implements Bank {
-	private ServletDriver driver;
+	private SOAPDriver driver;
 
-	public ServletBank(ServletDriver driver) {
+	public ServletBank(SOAPDriver driver) {
 		this.driver = driver;
 	}
 

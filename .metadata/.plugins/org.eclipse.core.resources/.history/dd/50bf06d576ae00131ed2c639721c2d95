@@ -1,0 +1,73 @@
+package ch.fhnw.bank.server.soap;
+
+import java.io.IOException;
+import java.util.Set;
+
+import javax.jws.WebService;
+import javax.xml.ws.Endpoint;
+
+import ch.fhnw.bank.Account;
+import ch.fhnw.bank.Bank;
+import ch.fhnw.bank.InactiveException;
+import ch.fhnw.bank.OverdrawException;
+import ch.fhnw.bank.server.ServerBank;
+
+@WebService
+public class SOAPBankService {
+	private static Bank bank;
+	
+	static {
+		bank = ServerBank.getInstance();
+	}
+	
+	public static void main(String[] args){
+		Endpoint.publish(
+		"http://127.0.0.1:9876/soapBank", // publication URI
+		new SOAPBankService()); // SIB instance
+		System.out.println("service published");
+		}
+
+	public String createAccount(String owner) throws IOException {
+		return bank.createAccount(owner);
+	}
+
+	public boolean closeAccount(String number) throws IOException {
+		return bank.closeAccount(number);
+	}
+
+	public Set<String> getAccountNumbers() throws IOException {
+		return bank.getAccountNumbers();
+	}
+
+	public Account getAccount(String number) throws IOException {
+		return bank.getAccount(number);
+	}
+
+	public void transfer(Account a, Account b, double amount)
+			throws IOException, IllegalArgumentException, OverdrawException,
+			InactiveException {
+		bank.transfer(a, b, amount);
+	}
+
+	public void deposit(String number, double amount) throws IOException,
+			IllegalArgumentException, InactiveException {
+		bank.getAccount(number).deposit(amount);
+	}
+
+	public void withdraw(String number, double amount) throws IOException,
+			IllegalArgumentException, OverdrawException, InactiveException {
+		bank.getAccount(number).deposit(amount);
+	}
+
+	public double getAccountBalance(String number) throws IOException {
+		return bank.getAccount(number).getBalance();
+	}
+
+	public String getAccountOwner(String number) throws IOException {
+		return bank.getAccount(number).getOwner();
+	}
+
+	public boolean isAccountActive(String number) throws IOException {
+		return bank.getAccount(number).isActive();
+	}
+}

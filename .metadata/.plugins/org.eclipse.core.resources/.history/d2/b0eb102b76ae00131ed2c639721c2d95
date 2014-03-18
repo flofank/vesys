@@ -1,0 +1,5 @@
+package ch.fhnw.bank.server.soap;
+
+public class SOAPBankService {
+
+}

@@ -13,9 +13,9 @@ import ch.fhnw.bank.communication.WithdrawTask;
 
 public class ServletAccount implements Account {
 	private String number;
-	private ServletDriver driver;
+	private SOAPDriver driver;
 
-	public ServletAccount(String number, ServletDriver driver) throws IOException {
+	public ServletAccount(String number, SOAPDriver driver) throws IOException {
 		this.number = number;
 		this.driver = driver;
 	}

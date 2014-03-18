@@ -1,0 +1,92 @@
+package ch.fhnw.bank.client.servlet;
+
+import java.io.IOException;
+
+import ch.fhnw.bank.Account;
+import ch.fhnw.bank.InactiveException;
+import ch.fhnw.bank.OverdrawException;
+import ch.fhnw.bank.communication.DepositTask;
+import ch.fhnw.bank.communication.GetBalanceTask;
+import ch.fhnw.bank.communication.GetOwnerTask;
+import ch.fhnw.bank.communication.IsActiveTask;
+import ch.fhnw.bank.communication.WithdrawTask;
+
+public class ServletAccount implements Account {
+	private String number;
+	private ServletDriver driver;
+
+	public ServletAccount(String number, ServletDriver driver) throws IOException {
+		this.number = number;
+		this.driver = driver;
+	}
+	@Override
+	public String getNumber() throws IOException {
+		return number;
+	}
+
+	@Override
+	public String getOwner() throws IOException {
+		GetOwnerTask task = new GetOwnerTask(number);
+		task = driver.invoke(task);
+		if (task.hasException() && task.getException() instanceof IOException) {
+			throw (IOException) task.getException();
+		}
+		return task.getResult();
+	}
+
+	@Override
+	public boolean isActive() throws IOException {
+		IsActiveTask task = new IsActiveTask(number);
+		task = driver.invoke(task);
+		if (task.hasException() && task.getException() instanceof IOException) {
+			throw (IOException) task.getException();
+		}
+		return task.getResult();
+	}
+
+	@Override
+	public void deposit(double amount) throws IOException,
+			IllegalArgumentException, InactiveException {
+		DepositTask task = new DepositTask(number, amount);
+		task = driver.invoke(task);
+		if (task.hasException()) {
+			if (task.getException() instanceof IllegalArgumentException) {
+				throw (IllegalArgumentException) task.getException();
+			} else  if (task.getException() instanceof InactiveException) {
+				throw (InactiveException) task.getException();
+			} else if (task.getException() instanceof IOException) {
+				throw (IOException) task.getException();
+			}
+		}
+		task.getResult();
+	}
+
+	@Override
+	public void withdraw(double amount) throws IOException,
+			IllegalArgumentException, OverdrawException, InactiveException {
+		WithdrawTask task = new WithdrawTask(number, amount);
+		task = driver.invoke(task);
+		if (task.hasException()) {
+			if (task.getException() instanceof IllegalArgumentException) {
+				throw (IllegalArgumentException) task.getException();
+			} else  if (task.getException() instanceof InactiveException) {
+				throw (InactiveException) task.getException();
+			} else if (task.getException() instanceof OverdrawException) {
+				throw (OverdrawException) task.getException();
+			} else if (task.getException() instanceof IOException) {
+				throw (IOException) task.getException();
+			}
+		}
+		task.getResult();
+	}
+
+	@Override
+	public double getBalance() throws IOException {
+		GetBalanceTask task = new GetBalanceTask(number);
+		task = driver.invoke(task);
+		if (task.hasException() && task.getException() instanceof IOException) {
+			throw (IOException) task.getException();
+		}
+		return task.getResult();
+	}
+}

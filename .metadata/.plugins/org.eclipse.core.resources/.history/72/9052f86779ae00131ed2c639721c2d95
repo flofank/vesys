@@ -1,0 +1,61 @@
+package ch.fhnw.bank.client.soap;
+
+import java.io.IOException;
+import java.util.Set;
+
+import ch.fhnw.bank.Account;
+import ch.fhnw.bank.Bank;
+import ch.fhnw.bank.InactiveException;
+import ch.fhnw.bank.OverdrawException;
+import ch.fhnw.bank.client.soap.jaxws.IOException_Exception;
+import ch.fhnw.bank.client.soap.jaxws.InactiveException_Exception;
+import ch.fhnw.bank.client.soap.jaxws.OverdrawException_Exception;
+import ch.fhnw.bank.client.soap.jaxws.SOAPBankService;
+import ch.fhnw.bank.communication.CloseAccountTask;
+import ch.fhnw.bank.communication.CreateAccountTask;
+import ch.fhnw.bank.communication.GetAccountNumbersTask;
+import ch.fhnw.bank.communication.TransferTask;
+
+public class SOAPBank implements Bank {
+	private SOAPBankService service;
+
+	public SOAPBank(SOAPBankService service) {
+		this.service = service;
+	}
+
+	@Override
+	public String createAccount(String owner) throws IOException {
+		return service.createAccount(owner);
+	}
+
+	@Override
+	public boolean closeAccount(String number) throws IOException {
+		return service.closeAccount(number);
+	}
+
+	@Override
+	public Set<String> getAccountNumbers() throws IOException {
+		return service.getAccountNumbers();
+	}
+
+	@Override
+	public Account getAccount(String number) throws IOException {
+		return new SOAPAccount(number, service);
+	}
+
+	@Override
+	public void transfer(Account a, Account b, double amount)
+			throws IOException, IllegalArgumentException, OverdrawException,
+			InactiveException {
+		try {
+			service.transfer(a.getNumber(), b.getNumber(), amount);
+		} catch (IOException_Exception e) {
+			throw new IOException(e);
+		} catch (InactiveException_Exception e) {
+			throw new InactiveException(e);
+		} catch (OverdrawException_Exception e) {
+			throw new OverdrawException(e);
+		}
+	}
+
+}
